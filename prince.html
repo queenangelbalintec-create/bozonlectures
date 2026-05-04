@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Prince - Lecture Series</title>
+    <style>
+        :root {
+            --primary-color: #8c7b5d;
+            --bg-color: #f9f7f2;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+        }
+
+        nav {
+            background-color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .site-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .page-header {
+            background-image: url('https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .page-header h1 {
+            color: white;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 1;
+            border: 2px solid white;
+            padding: 20px 40px;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .intro-text {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .author {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+            display: block;
+            font-style: italic;
+        }
+
+        .embed-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            margin-bottom: 15px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+        }
+
+        .embed-box iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .topic-list {
+            list-style: none;
+            padding: 0;
+        }
+        .topic-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .topic-list li:before {
+            content: "• ";
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .content-container { grid-template-columns: 1fr; }
+        }
+
+        .back-btn-wrap { 
+            text-align: center; padding: 30px 20px 50px; 
+        }
+        .back-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px;
+            background-color: var(--primary-color); 
+            color: white; 
+            text-decoration: none; 
+            padding: 12px 28px; 
+            border-radius: 4px; 
+            font-size: 1rem; 
+            transition: opacity 0.2s;    
+        }
+        .back-btn:hover { 
+            opacity: 0.85; 
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <div class="logo">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="site-title">Lecture series: The Prince</div>
+        </div>
+        <div class="nav-right">
+            <div class="dropdown">
+                <button class="dropdown-btn">
+                    Lecture series <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="sonnets.html">Sonnets</a>
+                    <a href="prince.html">The Prince</a>
+                    <a href="faust.html">Faust</a>
+                    <a href="essay.html">College Application Essay</a>
+                    <a href="proposal.html">Proposal Presentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>The Prince</h1>
+    </div>
+
+    <div class="intro-text">
+        <p>Niccolò Machiavelli’s The Prince is a guide on how rulers gain, maintain, and strengthen power through practical and sometimes harsh strategies. In this presentation, we will explore the different types of states, ways of gaining power, the role of the military, and the qualities needed to be an effective ruler.</p>
+    </div>
+
+    <div class="content-container">
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/Vo1f6tUE7vQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Introduction to The Prince</h3>
+            <span class="author">by Garcia</span>
+            <ul class="topic-list">
+                <li>Niccolò Machiavelli, Florentine thinker during the Renaissance</li>
+                <li>Written as The Prince for political guidance in unstable times</li>
+                <li>Focuses on real-world power and leadership, not ideals</li>
+                <li>Emphasizes survival, control, and maintaining authority</li>
+                <li>Suggests leaders must be practical, even if morally difficult</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/jK1g-8V9zXM" title="Type of Principalities (Ch. 1-5, The Prince)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Types of Principalities (Ch. 1-5)</h3>
+            <span class="author">by Dagdag</span>
+            <ul class="topic-list">
+                <li>Machiavelli classifies all states as either Republics or Principalities.</li>
+                <li>Hereditary principalities are easy to maintain by simply following ancestral traditions.</li>
+                <li>New or "Mixed" principalities are unstable because subjects change masters in the hope of improvement.</li>
+                <li>To hold a state accustomed to living under its own laws, a prince must either ruin it, reside there, or allow it to keep its laws while paying tribute.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/Ll5NWN2pYyg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Gaining Power (Ch. 6-9)</h3>
+            <span class="author">by Lucas</span>
+            <ul class="topic-list">
+                <li>Skill and opportunity, not luck, build lasting power.</li>
+                <li>Borrowed power collapses without strong personal foundations.</li>
+                <li>Swift, limited cruelty is better than prolonged harshness.</li>
+                <li>People-backed rulers are more stable than noble-backed ones.</li>
+
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/Ols_hCqofuU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Military Power (Ch. 10-14)</h3>
+            <span class="author">by Aquino</span>
+            <ul class="topic-list">
+                <li>What truly makes a ruler powerful?</li>
+                <li>Military strength is the foundation of power</li>
+                <li>Avoid mercenaries and rely on loyal armies</li>
+                <li>Always prepare for war even in peace</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/WJGwilLmGk0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Qualities of a Prince (Ch. 15-19)</h3>
+            <span class="author">by Viloria III</span>
+            <ul class="topic-list">
+                <li>A ruler must earn the people’s respect, not their resentment</li>
+                <li>Great leaders shift strategies when circumstances demand it</li>
+                <li>Weak and indecisive leadership opens the door to ruin</li>
+                <li>Fortune plays a role, but preparation and skill matter more</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/HyKppbvZELY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Maintaining Power & Fate (Ch. 20-26)</h3>
+            <span class="author">by Baltazar</span>
+            <ul class="topic-list">
+                <li>Avoid being hated by the people</li>
+                <li>Adapt to changing situations</li>
+                <li>Strong leadership prevents decline</li>
+                <li>Luck affects outcomes but isn’t everything</li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="back-btn-wrap">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faust - Lecture Series</title>
+    <style>
+        :root {
+            --primary-color: #8c7b5d;
+            --bg-color: #f9f7f2;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+        }
+
+        nav {
+            background-color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .site-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .page-header {
+            background-image: url('https://images.unsplash.com/photo-1535905557558-afc4877a26fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .page-header h1 {
+            color: white;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 1;
+            border: 2px solid white;
+            padding: 20px 40px;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .intro-text {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .author {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+            display: block;
+            font-style: italic;
+        }
+
+        .embed-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            margin-bottom: 15px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+        }
+
+        .embed-box iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .topic-list {
+            list-style: none;
+            padding: 0;
+        }
+        .topic-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .topic-list li:before {
+            content: "• ";
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .content-container { grid-template-columns: 1fr; }
+        }
+
+        .back-btn-wrap { 
+            text-align: center; padding: 30px 20px 50px; 
+        }
+        .back-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px;
+            background-color: var(--primary-color); 
+            color: white; 
+            text-decoration: none; 
+            padding: 12px 28px; 
+            border-radius: 4px; 
+            font-size: 1rem; 
+            transition: opacity 0.2s;    
+        }
+        .back-btn:hover { 
+            opacity: 0.85; 
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <div class="logo">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="site-title">Lecture series: Faust</div>
+        </div>
+        <div class="nav-right">
+            <div class="dropdown">
+                <button class="dropdown-btn">
+                    Lecture series <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="sonnets.html">Sonnets</a>
+                    <a href="prince.html">The Prince</a>
+                    <a href="faust.html">Faust</a>
+                    <a href="essay.html">College Application Essay</a>
+                    <a href="proposal.html">Proposal Presentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Faust</h1>
+    </div>
+
+    <div class="intro-text">
+        <p>Johann Wolfgang Von Goethe’s Faust is a philosophical masterpiece centered on a dissatisfied scholar who trades his soul to the devil, Mephistopheles, in a desperate quest for absolute knowledge and worldly fulfillment. It stands as a profound exploration of the eternal human struggle between moral integrity and the restless ambition to transcend our limitations.</p>
+    </div>
+
+    <div class="content-container">
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/5ZqWbC7f9pI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>The Author</h3>
+            <span class="author">by Anday</span>
+            <ul class="topic-list">
+                <li>Johann Wolfgang von Goethe spent most of his life developing Faust, reflecting its depth</li>
+                <li>His interests in science and philosophy shaped the themes of knowledge and ambition</li>
+                <li>The work reflects his belief that meaning comes from the pursuit of knowledge, not just achievement</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/Xv1TFtRouLE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Characters</h3>
+            <span class="author">by Baguiao</span>
+            <ul class="topic-list">
+                <li>Characters: Faust, Wagner, God, Mephistopheles, Gretchen, Martha, Valentine</li>
+                <li>These characters are symbols. They make Faust a powerful story about consequences and choices.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/osTZTj0o5s8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Settings</h3>
+            <span class="author">by Junio</span>
+            <ul class="topic-list">
+                <li>Faust by Johann Wolfgang von Goethe: settings mirror Faust’s inner conflict and growth.</li>
+                <li>Prologue in Heaven = his life is a cosmic test; Study = trapped, hopeless despite knowledge.</li>
+                <li>Outside = life around him but he feels empty; Gretchen’s room = innocence → guilt and tragedy.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/TQ3FkVSLUT8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Plot Summary</h3>
+            <span class="author">by Baal</span>
+            <ul class="topic-list">
+                <li>The Dark Bargain: Seeking deeper meaning, the scholar Faust trades his soul to the devil Mephistopheles for unlimited knowledge and pleasure.</li>
+                <li>Gretchen’s Tragedy: Faust’s pursuit of the innocent Gretchen leads to a series of deaths and her eventual imprisonment.</li>
+                <li>Salvation and Choice: While Faust escapes to continue his journey, Gretchen refuses to flee and is spiritually saved by choosing God. </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/eIc5642VbuY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Symbolisms</h3>
+            <span class="author">by Serraon</span>
+            <ul class="topic-list">
+                <li>Symbolism in Faust: An exploration of how characters and events represent deeper ideas about human ambition, temptation, and morality</li>
+                <li>Highlights how Faust symbolizes the restless human desire for meaning</li>
+                <li>Examines how Mephistopheles represents temptation and manipulation</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="embed-box">
+                <iframe src="https://www.youtube.com/embed/NrD6ofDYVsI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <h3>Morals and Themes</h3>
+            <span class="author">by Cabang</span>
+            <ul class="topic-list">
+                <li>Ambition is important, but too much of it without limits can lead to harmful decisions</li>
+                <li>Every action we make has consequences, not only for ourselves but also for others</li>
+                <li>People constantly face a struggle between good and evil, and our choices define who we are</li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="back-btn-wrap">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </div>
+</body>
+</html>
